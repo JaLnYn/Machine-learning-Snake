@@ -274,7 +274,7 @@ void Network::save(std::ofstream & outfile){
     // NOTE: we must always save last element to first because the earlier elements can only
     //  connect to later elements
     
-    
+    outfile<<score<<std::endl; // save score
     
     // save outer layer
     for (int i = 0; i < outputLayer.size(); i++) {
@@ -299,9 +299,11 @@ void Network::load(std::ifstream & infile, std::string input){
     // NOTE: we must always save last element to first because the earlier elements can only
     //  connect to later elements
     
+    score = std::stod(input); // download score
+    
     // save outer layer
     
-    
+    infile>>input;
     while (input != "EOL"){
         // connectTo
         outputLayer.push_back(Nuerons(0));
@@ -704,7 +706,7 @@ void smartboi::finishGame(int finalScore, int finalTicks){
          }
     };
     
-    double finalTick2 = (-finalTicks*finalTicks + finalTicks*100 - pop[currentNetwork].getNetworkSize())/500.0; // encourage for the first 19 steps, and then discourage because we don't want the ai to take too makny steps
+    double finalTick2 = (-finalTicks*finalTicks + finalTicks*32 - pop[currentNetwork].getNetworkSize()/320)/200; // encourage for the first 19 steps, and then discourage because we don't want the ai to take too makny steps
     
     
     
@@ -714,7 +716,7 @@ void smartboi::finishGame(int finalScore, int finalTicks){
     
     
     
-    pop[currentNetwork].setScore(fitness);
+    pop[currentNetwork].setScore((pop[currentNetwork].getScore()+fitness)/2.0); // retain some previous score so things that did well in one case does not die off imediatly
     
     
     if(currentNetwork < pop.size()-1){
@@ -731,9 +733,7 @@ void smartboi::finishGame(int finalScore, int finalTicks){
             
             pop[i].mutate();
         }
-        for (int i = 0; i < pop.size(); i++) {
-            pop[i].setScore(0);
-        }
+        
         
         std::ofstream FILEOUTPUT;
         FILEOUTPUT.open("projectOverview.txt");

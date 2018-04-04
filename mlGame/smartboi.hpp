@@ -62,7 +62,7 @@ private:
     uint id = 0;
     const static int inputNodes = 16;
     const static int outputNodes = 4;
-    double score = -1;
+    double score = 0;
     std::vector<Nuerons> inputLayer;
     std::vector<Nuerons> outputLayer;
     std::vector<Nuerons> HiddenLayer;
@@ -70,6 +70,7 @@ private:
     
     
 public:
+    
     void save(std::ofstream & outfile);
     void load(std::ifstream & infile,std::string input);
     void genorateNew();
